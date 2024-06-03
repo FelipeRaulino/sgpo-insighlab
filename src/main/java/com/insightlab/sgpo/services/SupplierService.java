@@ -47,7 +47,7 @@ public class SupplierService {
         supplier.setTaxId(supplierRequest.taxId());
         supplier.setPhone(supplierRequest.phone());
         supplier.setEmail(supplierRequest.email());
-        supplier.setStatus(true);
+        supplier.setStatus(supplierRequest.status());
         supplier.setCreatedAt(LocalDateTime.now());
 
         this.repository.save(supplier);
@@ -86,6 +86,7 @@ public class SupplierService {
         supplierDB.setTaxId(supplierRequest.taxId());
         supplierDB.setPhone(supplierRequest.phone());
         supplierDB.setEmail(supplierRequest.email());
+        supplierDB.setStatus(supplierRequest.status());
 
         this.repository.save(supplierDB);
 
