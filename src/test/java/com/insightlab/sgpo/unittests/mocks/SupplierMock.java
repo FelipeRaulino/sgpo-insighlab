@@ -28,7 +28,8 @@ public class SupplierMock {
                 "Tech Solutions LLC",
                 "55-6677889",
                 "+1 415 555-6543",
-                "info@techsolutions.com"
+                "info@techsolutions.com",
+                true
         );
     }
 

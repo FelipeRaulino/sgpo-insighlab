@@ -15,8 +15,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -102,10 +102,10 @@ public class SupplierServiceTest {
 
         assertNotNull(result);
         assertEquals("Tech Solutions LLC", result.name());
-        assertEquals("Tech Solutions LLC", result.name());
         assertEquals("55-6677889", result.taxId());
         assertEquals("+1 415 555-6543", result.phone());
         assertEquals("info@techsolutions.com", result.email());
+        assertTrue(result.status());
     }
 
     @Test
