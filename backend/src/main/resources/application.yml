@@ -12,4 +12,7 @@ spring:
     hibernate:
       ddl-auto: none
 
+cors:
+  originPatterns: http://localhost:5173,http://localhost:3000
+
 
