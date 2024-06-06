@@ -15,4 +15,10 @@ spring:
 cors:
   originPatterns: http://localhost:5173,http://localhost:3000
 
+security:
+  jwt:
+    token:
+      secret-key: ${SECRET_KEY}
+      expire-length: ${TOKEN_EXPIRE_LENGTH}
+
 
