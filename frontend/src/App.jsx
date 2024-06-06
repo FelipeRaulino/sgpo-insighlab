@@ -1,34 +1,260 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import axios from "axios";
+import { Button, Divider, Flex, Form, Input, Modal, Popconfirm, Space, Table, notification } from "antd"
+import { useCallback, useEffect, useState } from "react";
+import Title from "antd/es/typography/Title";
+import "./App.css";
+import ReactInputMask from "react-input-mask";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [suppliers, setSuppliers] = useState([]);
+
+  const [form] = Form.useForm();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingSupplier, setEdittingSupplier] = useState(null);
+
+  const [api, contextHolder] = notification.useNotification();
+
+  const [taxIdMask, setTaxIdMask] = useState("999.999.999-99");
+
+  const openSupplierNotification = (operation, supplierName) => {
+    if (operation === 'create'){
+      api['success']({
+        message: 'Adicionado com sucesso!',
+        description: `O fornecedor(a) ${supplierName} foi adicionado com sucesso!`
+      });
+    }
+
+    if (operation === 'update'){
+      api['success']({
+        message: 'Atualizado com sucesso!',
+        description: `O fornecedor(a) ${supplierName} foi atualizado com sucesso!`
+      });
+    }
+
+    if (operation === 'delete'){
+      api['success']({
+        message: 'Deletado com sucesso!',
+        description: `O fornecedor(a) ${supplierName} foi deletado com sucesso!`
+      });
+    }
+  }
+
+  const columns = [
+    {
+      title: 'Nome',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'CNPJ/CPF',
+      dataIndex: 'taxId',
+      key: 'taxId',
+      width: 200
+    },
+    {
+      title: 'Telefone',
+      dataIndex: 'phone',
+      key: 'phone',
+      width: 200
+    },
+    {
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
+    },
+    {
+      title: 'Ação',
+      key: 'action',
+      render: (_, record) => (
+        <Space size="middle">
+          <a onClick={() => handleOnUpdate(record)}>Editar</a>
+          <Popconfirm
+            title="Excluir fornecedor"
+            description="Você tem certeza que deseja excluir fornecedor ?"
+            onConfirm={() => handleOnDelete(record)}
+            okText="Sim"
+            cancelText="Não"
+          >
+            <Button>Excluir</Button>
+          </Popconfirm>
+        </Space>
+      ),
+    },
+  ];
+
+  const transformedSuppliers = suppliers.map(supplier => {
+    return {
+      ...supplier,
+      key: supplier.id
+    }
+  });
+
+  const showModal = () => {
+    setEdittingSupplier(null);
+    setIsModalOpen(true);
+  }
+
+  const handleOnFinish = (values) => {
+    if (editingSupplier) {
+      const edittedSupplier = {...values, status: true};
+      axios.put(`http://localhost:8080/api/v1/suppliers/${editingSupplier.id}`, edittedSupplier)
+        .then(response => {
+          setSuppliers(prevSuppliers => prevSuppliers.map(supplier => 
+            supplier.id === editingSupplier.id ? response.data : supplier
+          ));
+          form.resetFields();
+          openSupplierNotification('update', response.data.name);
+          setIsModalOpen(false);
+        })
+        .catch(error => console.log("Error: ", error));
+
+    } else {
+      const newSupplier = {...values, status: true};
+  
+      axios.post("http://localhost:8080/api/v1/suppliers", newSupplier)
+        .then(response => {
+          setSuppliers(prevSuppliers => [...prevSuppliers, response.data])
+          openSupplierNotification('create', response.data.name);
+          form.resetFields();
+        })
+        .catch(error => console.log(error));
+  
+      setIsModalOpen(false);
+    }
+
+  }
+
+  const handleOnDelete = (record) => {
+    axios.delete(`http://localhost:8080/api/v1/suppliers/${record.id}`)
+      .then(response => {
+        if(response.status === 204){
+          setSuppliers(prevSuppliers => prevSuppliers.filter(supplier => supplier.id !== record.id));
+          openSupplierNotification('delete', record.name);
+        }
+      })
+      .catch(errorInfo => console.log("Error: ", errorInfo));
+  }
+
+  const handleOnUpdate = (record) => {
+    setEdittingSupplier(record);
+    form.setFieldsValue(record);
+    setIsModalOpen(true);
+  }
+
+  const handleTaxIdChange = (e) => {
+    const value = e.target.value.replace(/\D/g, '');
+    setTaxIdMask(value.length > 11 ? "99.999.999/9999-99" : "999.999.999-99");
+  }
+
+  const getAllSupliers = useCallback(() => {
+    axios.get("http://localhost:8080/api/v1/suppliers")
+      .then(response => setSuppliers(response.data))
+      .catch(error => console.log(error));
+  }, [setSuppliers]);
+
+  useEffect(() => {
+    getAllSupliers();
+  }, [getAllSupliers]);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className="app-container">
+      {contextHolder}
+      <Title>Lista de Fornecedores</Title>
+      <Divider />
+      <Flex gap="middle" vertical>
+        <Button type="primary" onClick={showModal}>Adicionar novo fornecedor</Button>
+        <Table dataSource={suppliers && transformedSuppliers} columns={columns} />
+      </Flex>
+      <Modal 
+        title={editingSupplier ? "Editar Fornecedor" : "Adicionar Fornecedor"} 
+        open={isModalOpen} 
+        okText={editingSupplier ? "Salvar" : "Adicionar"}
+        okButtonProps={{
+          autoFocus: true,
+          htmlType: 'submit'
+        }}
+        cancelText="Cancelar"
+        onCancel={() => {
+          setIsModalOpen(false)
+          form.resetFields();
+        }}
+        destroyOnClose
+        modalRender={(dom) => (
+          <Form 
+            name="form_modal"
+            layout="vertical"
+            form={form}
+            labelCol={{
+              span: 4
+            }}
+            onFinish={(values) => handleOnFinish(values)} 
+            onFinishFailed={(errorInfo) => console.log("Failed: ", errorInfo)}
+          >
+            {dom}
+          </Form>
+        )}
+      >
+        <Form.Item 
+          label="Nome" 
+          name="name"
+          rules={[
+            {
+              required: true,
+              message: "Por favor, insira o nome do fornecedor!"
+            }
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item 
+          label="CPF/CNPJ" 
+          name="taxId" 
+          rules={[
+            {
+              required: true,
+              message: "Por favor, insira o CPF/CNPJ do fornecedor!"
+            }
+          ]}
+        >
+          <ReactInputMask
+            mask={taxIdMask}
+            maskChar={null}
+            onChange={handleTaxIdChange}
+          >
+            {(inputProps) => <Input maxLength="18" {...inputProps}/>}
+          </ReactInputMask>
+        </Form.Item>
+        <Form.Item 
+          label="Telefone" 
+          name="phone" 
+          rules={[
+            {
+              required: true,
+              message: "Por favor, insira o telefone do fornecedor!"
+            }
+          ]}
+        >
+          <ReactInputMask 
+            mask="(99) 99999-9999"
+            maskChar={null}
+          >
+            {(inputprops) => <Input maxLength="15" {...inputprops} />}
+          </ReactInputMask>
+        </Form.Item>
+        <Form.Item 
+          label="Email" 
+          name="email" 
+          rules={[
+            {
+              required: true,
+              message: "Por favor, insira o email do fornecedor!"
+            }
+          ]}
+        >
+          <Input />
+        </Form.Item>
+      </Modal>
+    </div>
   )
 }
 
