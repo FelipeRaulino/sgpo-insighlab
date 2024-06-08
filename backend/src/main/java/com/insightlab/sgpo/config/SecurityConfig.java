@@ -76,9 +76,17 @@ public class SecurityConfig {
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**"
                                 ).permitAll()
-                                .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
-                                .requestMatchers("/api/**").hasAnyRole("ADMIN", "EMPLOYEE")
-                                .requestMatchers("/users").denyAll()
+                                // Apenas usuários ADMIN podem deletar suppliers e users
+                                .requestMatchers(HttpMethod.DELETE, "/api/v1/suppliers/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/api/v1/users/**").hasRole("ADMIN")
+                                // ADMIN e EMPLOYEE podem atualizar users
+                                .requestMatchers(HttpMethod.PUT, "/api/v1/users/**").hasAnyRole("ADMIN", "EMPLOYEE")
+                                // Apenas usuários ADMIN têm acesso a todos os outros métodos de gerenciamento de users
+                                .requestMatchers("/api/v1/users/**").hasRole("ADMIN")
+                                // Para todos os outros métodos da API, o usuário deve ser ADMIN ou EMPLOYEE
+                                .requestMatchers("/api/v1/**").hasAnyRole("ADMIN", "EMPLOYEE")
+                                // Todas as outras requisições devem ser autenticadas
+                                .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(cors -> {})

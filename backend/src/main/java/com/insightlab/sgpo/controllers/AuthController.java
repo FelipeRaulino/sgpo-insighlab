@@ -2,8 +2,8 @@ package com.insightlab.sgpo.controllers;
 
 import com.insightlab.sgpo.data.dtos.v1.security.AuthenticationRequestDTO;
 import com.insightlab.sgpo.data.dtos.v1.security.TokenResponseDTO;
-import com.insightlab.sgpo.data.dtos.v1.security.UserRequestDTO;
-import com.insightlab.sgpo.data.dtos.v1.security.UserResponseDTO;
+import com.insightlab.sgpo.data.dtos.v1.security.CreateUserRequestDTO;
+import com.insightlab.sgpo.data.dtos.v1.security.CreateUserResponseDTO;
 import com.insightlab.sgpo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,9 +21,9 @@ public class AuthController {
     private UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO userRequest){
+    public ResponseEntity<CreateUserResponseDTO> createUser(@RequestBody CreateUserRequestDTO userRequest){
 
-        UserResponseDTO userResponseDTO = this.userService.createUser(userRequest);
+        CreateUserResponseDTO userResponseDTO = this.userService.createUser(userRequest);
 
         return ResponseEntity.ok().body(userResponseDTO);
     }

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 public record TokenResponseDTO(
+        String id,
         String username,
         Boolean authenticated,
         Date created,

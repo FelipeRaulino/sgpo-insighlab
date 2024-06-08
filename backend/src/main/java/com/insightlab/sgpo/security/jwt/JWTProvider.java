@@ -45,7 +45,7 @@ public class JWTProvider {
         algorithm = Algorithm.HMAC256(secretKey.getBytes());
     }
 
-    public TokenResponseDTO createAccessToken(String username, Set<Role> roles){
+    public TokenResponseDTO createAccessToken(String id, String username, List<Role> roles){
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
@@ -55,7 +55,7 @@ public class JWTProvider {
 
         String accessToken = getAccessToken(username, rolesMapped, now, validity);
 
-        return new TokenResponseDTO(username, true, now, validity, rolesMapped, accessToken);
+        return new TokenResponseDTO(id, username, true, now, validity, rolesMapped, accessToken);
     }
 
     private String getAccessToken(String username, List<String> roles, Date now, Date validity) {

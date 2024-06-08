@@ -45,7 +45,7 @@ public class User implements UserDetails, Serializable {
             joinColumns = {@JoinColumn(name = "id_user")},
             inverseJoinColumns = {@JoinColumn(name = "id_role")}
     )
-    private Set<Role> roles;
+    private List<Role> roles;
 
     public User(){}
 
@@ -81,11 +81,11 @@ public class User implements UserDetails, Serializable {
         this.enabled = enabled;
     }
 
-    public Set<Role> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 

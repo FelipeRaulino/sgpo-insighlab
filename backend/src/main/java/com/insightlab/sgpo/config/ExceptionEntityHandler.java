@@ -1,6 +1,7 @@
 package com.insightlab.sgpo.config;
 
 import com.insightlab.sgpo.data.dtos.v1.general.ErrorMessageDTO;
+import com.insightlab.sgpo.domain.security.exceptions.UserIdNotFoundException;
 import com.insightlab.sgpo.domain.supplier.exceptions.SupplierAlreadyExistsException;
 import com.insightlab.sgpo.domain.supplier.exceptions.SupplierNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,11 @@ public class ExceptionEntityHandler {
 
     @ExceptionHandler(SupplierNotFoundException.class)
     public ResponseEntity<?> handleOnSupplierNotFound(SupplierNotFoundException exception){
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorMessageDTO(exception.getMessage()));
+    }
+
+    @ExceptionHandler(UserIdNotFoundException.class)
+    public ResponseEntity<?> handleOnUserIdNotFoundException(UserIdNotFoundException exception){
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorMessageDTO(exception.getMessage()));
     }
 
