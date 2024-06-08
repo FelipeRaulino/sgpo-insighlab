@@ -60,7 +60,7 @@ const Profile = () => {
     };
 
     try {
-      const response = await axios.put(`/users/${auth.id}`, transformedValues);
+      const response = await axios.put(`/api/v1/users/${auth.id}`, transformedValues);
       const { username, roles, token } = response.data;
 
       const newAuthData = {

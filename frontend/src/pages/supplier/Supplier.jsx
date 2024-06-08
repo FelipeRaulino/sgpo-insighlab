@@ -98,7 +98,7 @@ const Supplier = () => {
   const handleOnFinish = (values) => {
     if (editingSupplier) {
       const edittedSupplier = {...values, status: true};
-      axios.put(`/suppliers/${editingSupplier.id}`, edittedSupplier)
+      axios.put(`api/v1/suppliers/${editingSupplier.id}`, edittedSupplier)
         .then(response => {
           setSuppliers(prevSuppliers => prevSuppliers.map(supplier =>
             supplier.id === editingSupplier.id ? response.data : supplier
@@ -112,7 +112,7 @@ const Supplier = () => {
     } else {
       const newSupplier = {...values, status: true};
 
-      axios.post('/suppliers', newSupplier)
+      axios.post('/api/v1/suppliers', newSupplier)
         .then(response => {
           setSuppliers(prevSuppliers => [...prevSuppliers, response.data]);
           openSupplierNotification('create', response.data.name);
@@ -126,7 +126,7 @@ const Supplier = () => {
   };
 
   const handleOnDelete = (record) => {
-    axios.delete(`/suppliers/${record.id}`)
+    axios.delete(`/api/v1/suppliers/${record.id}`)
       .then(response => {
         if(response.status === 204){
           setSuppliers(prevSuppliers => prevSuppliers.filter(supplier => supplier.id !== record.id));
@@ -148,7 +148,7 @@ const Supplier = () => {
   };
 
   const getAllSupliers = useCallback(() => {
-    axios.get('/suppliers')
+    axios.get('/api/v1/suppliers')
       .then(response => setSuppliers(response.data))
       .catch(error => console.log(error));
   }, [setSuppliers]);

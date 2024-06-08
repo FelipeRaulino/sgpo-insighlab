@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "../../config/axiosConfig";
 import { Button, Flex, Form, Input, notification } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useAuth } from '../../context/AuthContext';
@@ -40,7 +40,7 @@ const Login = () => {
 
   const onFinish = async (values) => {
     try {
-      const response = await axios.post('http://localhost:8080/auth/signin', values);
+      const response = await axios.post('/auth/signin', values);
 
       const { id, accessToken, roles, expiration, username } = response.data;
       const authData = {

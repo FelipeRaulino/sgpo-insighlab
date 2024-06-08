@@ -1,7 +1,7 @@
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Button, Flex, Form, Input, notification } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../../config/axiosConfig';
 import './Signup.css';
 import Title from 'antd/es/typography/Title';
 
@@ -29,7 +29,7 @@ const Signup = () => {
 
   const onFinish = async (values) => {
     try {
-      const response = await axios.post('http://localhost:8080/auth/signup', values);
+      const response = await axios.post('/auth/signup', values);
 
       await openLoginNotification('authenticated', response.data.username);
 
