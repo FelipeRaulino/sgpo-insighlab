@@ -86,7 +86,8 @@ public class UserService implements UserDetailsService {
         return new CreateUserResponseDTO(
                 user.getId(),
                 user.getUsername(),
-                user.getPassword()
+                user.getPassword(),
+                convertRolesToRoleNames(user.getRoles())
         );
     }
 

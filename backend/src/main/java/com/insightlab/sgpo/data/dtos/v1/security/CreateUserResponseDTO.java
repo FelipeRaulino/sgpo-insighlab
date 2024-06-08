@@ -1,4 +1,6 @@
 package com.insightlab.sgpo.data.dtos.v1.security;
 
-public record CreateUserResponseDTO(String id, String username, String password) {
+import java.util.List;
+
+public record CreateUserResponseDTO(String id, String username, String password, List<String> roles) {
 }
