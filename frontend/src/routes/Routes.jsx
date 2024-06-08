@@ -5,6 +5,7 @@ import Supplier from '../pages/supplier/Supplier';
 import { useAuth } from '../context/AuthContext';
 import Home from '../pages/home/Home';
 import Profile from '../pages/profile/Profile';
+import Users from '../pages/users/Users';
 
 const PrivateRoute = ({ element: Element, roles, ...rest }) => {
   const { auth } = useAuth();
@@ -28,6 +29,7 @@ const AppRoutes = () => {
       <Route path="/suppliers" element={<PrivateRoute element={Supplier} roles={['ROLE_ADMIN', 'ROLE_EMPLOYEE']}/>} />
       <Route path="/home" element={<PrivateRoute element={Home} roles={['ROLE_ADMIN', 'ROLE_EMPLOYEE']}/>} />
       <Route path="/profile" element={<PrivateRoute element={Profile} roles={['ROLE_ADMIN', 'ROLE_EMPLOYEE']}/>} />
+      <Route path="/users" element={<PrivateRoute element={Users} roles={['ROLE_ADMIN', 'ROLE_EMPLOYEE']}/>} />
       <Route path="/" element={<Navigate to="/login" />} />
     </Routes>
   );

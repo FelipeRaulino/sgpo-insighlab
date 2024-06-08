@@ -26,7 +26,11 @@ const MenuComponent = ({ currentPage }) => {
       icon: <HomeOutlined />
     },
     {
-      label: 'Usuários',
+      label: (
+        <a href={'/users'} rel="noopener noreferrer">
+					Usuários
+        </a>
+      ),
       key: 'users',
       icon: <UserAddOutlined />
     },
