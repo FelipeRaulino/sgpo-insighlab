@@ -73,7 +73,7 @@ Instruções para configurar e executar a aplicação localmente:
 
 4. Inicie a aplicação:
    ```bash
-   npm start
+   npm run dev
    ```
 
 ## Contribuição
