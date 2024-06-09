@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Menu } from 'antd';
 import { HomeOutlined, UserOutlined, PartitionOutlined, UserAddOutlined, LogoutOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const MenuComponent = ({ currentPage }) => {
@@ -18,45 +18,45 @@ const MenuComponent = ({ currentPage }) => {
   const items = [
     {
       label: (
-        <a href={'/home'} rel="noopener noreferrer">
+        <Link to='/home' rel="noopener noreferrer">
 					Home
-        </a>
+        </Link>
       ),
       key: 'home',
       icon: <HomeOutlined />
     },
     {
       label: (
-        <a href={'/users'} rel="noopener noreferrer">
+        <Link to='/users' rel="noopener noreferrer">
 					Usuários
-        </a>
+        </Link>
       ),
       key: 'users',
       icon: <UserAddOutlined />
     },
     {
       label: (
-        <a href={'/suppliers'} rel="noopener noreferrer">
+        <Link to='/suppliers' rel="noopener noreferrer">
 					Fornecedores
-        </a>
+        </Link>
       ),
       key: 'suppliers',
       icon: <PartitionOutlined />
     },
     {
       label: (
-        <a href={'/profile'} rel="noopener noreferrer">
+        <Link to='/profile' rel="noopener noreferrer">
 					Perfil
-        </a>
+        </Link>
       ),
       key: 'profile',
       icon: <UserOutlined />
     },
     {
       label: (
-        <a onClick={logout} rel="noopener noreferrer">
+        <Link onClick={logout} rel="noopener noreferrer">
 					Logout
-        </a>
+        </Link>
       ),
       key: 'logout',
       icon: <LogoutOutlined />

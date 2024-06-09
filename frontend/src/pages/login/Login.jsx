@@ -3,7 +3,7 @@ import { Button, Flex, Form, Input, notification } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useAuth } from '../../context/AuthContext';
 import './Login.css';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Title from 'antd/es/typography/Title';
 import { useEffect } from 'react';
 
@@ -106,7 +106,7 @@ const Login = () => {
             </Button>
           </Form.Item>
           <Form.Item className="form-signup-wrapper">
-            <span>Não possui uma conta ? <a href="/signup">Registre-se agora!</a></span>
+            <span>Não possui uma conta ? <Link to="/signup">Registre-se agora!</Link></span>
           </Form.Item>
         </Form>
       </div>
