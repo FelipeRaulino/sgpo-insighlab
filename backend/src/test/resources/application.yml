@@ -1,0 +1,24 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: sgpo
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+cors:
+  originPatterns: http://localhost:5173,http://localhost:3000
+
+security:
+  jwt:
+    token:
+      secret-key: 35c39668c52e2b9e4beff40d76f3b78901973b6c0901559621f13e8c8aeaea94
+      expire-length: 3600000
+
+
