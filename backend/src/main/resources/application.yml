@@ -16,7 +16,7 @@ spring:
       ddl-auto: none
 
 cors:
-  originPatterns: http://localhost:5173,http://localhost:3000
+  originPatterns: http://localhost:5173,http://localhost:3000,https://sgpo-insightlab.vercel.app/
 
 security:
   jwt:
