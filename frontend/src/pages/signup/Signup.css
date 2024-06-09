@@ -1,37 +1,73 @@
 .signup-page {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+}
+
+.signup-arrow {
+  font-size: 3.5rem;
+  position: absolute;
+  top: 2rem;
+  left: 1rem;
+  cursor: pointer;
+  color: #ebe7e7;
 }
 
 .signup-page__form {
-    flex: 1.25;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
+  flex: 1.25;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
 }
 
 .signup-page__illustration {
-    flex: 1;
-    background: url('../../assets/background-login-signup-2.jpg') no-repeat center center;
-    background-size: cover;
-    height: 100%;
+  flex: 1;
+  background: url('../../assets/background-login-signup-2.jpg') no-repeat center
+    center;
+  background-size: cover;
+  height: 100%;
 }
 
 .signup-form {
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    flex-direction: column;
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
 }
 
-.form-button-wrapper{
-    display: flex;
-    justify-content: center;
+.form-button-wrapper {
+  display: flex;
+  justify-content: center;
 }
 
-.form-signup-wrapper{
-    display: flex;
-    justify-content: center;
+.form-signup-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 575.98px) {
+  .signup-page__illustration {
+    display: none;
+  }
+
+  .signup-form > div > h1 {
+    font-size: 30px;
+  }
+
+  .signup-arrow {
+    font-size: 1.5rem;
+    position: absolute;
+    top: 2rem;
+    left: 1rem;
+    cursor: pointer;
+    color: #000;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .signup-page__form {
+    flex: 1.5;
+  }
 }

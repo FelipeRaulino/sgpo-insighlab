@@ -5,6 +5,7 @@ import { Button, Divider, Flex, Form, Input, Modal, Popconfirm, Space, Table, no
 import './Supplier.css';
 import MenuComponent from '../../components/menu/Menu';
 import Title from 'antd/es/typography/Title';
+import { useAuth } from '../../context/AuthContext';
 
 const Supplier = () => {
   const [suppliers, setSuppliers] = useState([]);
@@ -16,6 +17,8 @@ const Supplier = () => {
   const [api, contextHolder] = notification.useNotification();
 
   const [taxIdMask, setTaxIdMask] = useState('999.999.999-99');
+
+  const { auth } = useAuth();
 
   const openSupplierNotification = (operation, supplierName) => {
     if (operation === 'create'){
@@ -69,15 +72,17 @@ const Supplier = () => {
       render: (_, record) => (
         <Space size="middle">
           <a onClick={() => handleOnUpdate(record)}>Editar</a>
-          <Popconfirm
-            title="Excluir fornecedor"
-            description="Você tem certeza que deseja excluir fornecedor ?"
-            onConfirm={() => handleOnDelete(record)}
-            okText="Sim"
-            cancelText="Não"
-          >
-            <Button>Excluir</Button>
-          </Popconfirm>
+          {isAdmin && (
+            <Popconfirm
+              title="Excluir fornecedor"
+              description="Você tem certeza que deseja excluir fornecedor ?"
+              onConfirm={() => handleOnDelete(record)}
+              okText="Sim"
+              cancelText="Não"
+            >
+              <Button>Excluir</Button>
+            </Popconfirm>
+          )}
         </Space>
       ),
     },
@@ -152,6 +157,8 @@ const Supplier = () => {
       .then(response => setSuppliers(response.data))
       .catch(error => console.log(error));
   }, [setSuppliers]);
+
+  const isAdmin = auth?.roles.includes('ROLE_ADMIN');
 
   useEffect(() => {
     getAllSupliers();

@@ -1,4 +1,4 @@
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import { Button, Flex, Form, Input, notification } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../config/axiosConfig';
@@ -41,8 +41,13 @@ const Signup = () => {
     }
   };
 
+  const handleOnBack = () => {
+    navigate('/login');
+  }
+
   return (
     <div className="signup-page">
+      <ArrowLeftOutlined onClick={handleOnBack} className='signup-arrow' />
       {contextHolder}
       <div className="signup-page__illustration" />
       <div className="signup-page__form">

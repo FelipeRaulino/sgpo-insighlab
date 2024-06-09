@@ -1,37 +1,50 @@
 .login-page {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
 }
 
 .login-page__form {
-    flex: 1.25;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
+  flex: 1.25;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
 }
 
 .login-page__illustration {
-    flex: 1;
-    background: url('../../assets/background-login-signup-2.jpg') no-repeat center center;
-    background-size: cover;
-    height: 100%;
+  flex: 1;
+  background: url('../../assets/background-login-signup-2.jpg') no-repeat center
+    center;
+  background-size: cover;
+  height: 100%;
 }
 
 .login-form {
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    flex-direction: column;
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
 }
 
-.form-button-wrapper{
-    display: flex;
-    justify-content: center;
+.form-button-wrapper {
+  display: flex;
+  justify-content: center;
 }
 
-.form-signup-wrapper{
-    display: flex;
-    justify-content: center;
+.form-signup-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 575.98px) {
+  .login-page__illustration {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .login-page__form {
+    flex: 1.5;
+  }
 }
