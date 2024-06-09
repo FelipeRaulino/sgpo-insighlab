@@ -33,6 +33,8 @@ public class SupplierControllerTest extends AbstractIntegrationTest {
     private static RequestSpecification requestSpecification;
 
     private static String createdSupplierId;
+    private static String createdUserId;
+    private static String userAccessToken;
 
     @Test
     @Order(0)
@@ -68,6 +70,8 @@ public class SupplierControllerTest extends AbstractIntegrationTest {
         assertEquals("usertest", content.username());
 
         assertFalse(content.roles().isEmpty());
+
+        createdUserId = content.id();
     }
 
     @Test
@@ -99,6 +103,8 @@ public class SupplierControllerTest extends AbstractIntegrationTest {
                 .addFilter(new RequestLoggingFilter(LogDetail.ALL))
                 .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
                 .build();
+
+        userAccessToken = accessToken;
     }
 
     @Test
@@ -242,5 +248,26 @@ public class SupplierControllerTest extends AbstractIntegrationTest {
 
         assertNotNull(suppliers);
         assertFalse(suppliers.isEmpty());
+    }
+
+    @Test
+    @Order(7)
+    void shouldBeAbleToDeleteCreatedUser(){
+        RequestSpecification requestSpecification = new RequestSpecBuilder()
+                .addHeader(TestConfig.HEADER_PARAM_AUTHORIZATION, "Bearer " + userAccessToken)
+                .setPort(TestConfig.SERVER_PORT)
+                .setBasePath("/api/v1/users")
+                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
+                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+                .build();
+
+        var response = given().spec(requestSpecification)
+                .pathParams("id", createdUserId)
+                .when()
+                .delete("{id}")
+                .then()
+                .statusCode(204);
+
+        assertNotNull(response);
     }
 }

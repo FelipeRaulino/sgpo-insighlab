@@ -28,6 +28,8 @@ public class AuthControllerTest extends AbstractIntegrationTest {
 
     private static RequestSpecification requestSpecification;
 
+    private static String createdUserId;
+
     @Test
     @Order(0)
     public void shouldBeAbleToCreateANewUser(){
@@ -62,6 +64,8 @@ public class AuthControllerTest extends AbstractIntegrationTest {
         assertEquals("usertest", content.username());
 
         assertFalse(content.roles().isEmpty());
+
+        createdUserId = content.id();
     }
 
     @Test
@@ -88,10 +92,24 @@ public class AuthControllerTest extends AbstractIntegrationTest {
 
         requestSpecification = new RequestSpecBuilder()
                 .addHeader(TestConfig.HEADER_PARAM_AUTHORIZATION, "Bearer " + accessToken)
+                .setBasePath("/api/v1/users")
                 .setPort(TestConfig.SERVER_PORT)
                 .addFilter(new RequestLoggingFilter(LogDetail.ALL))
                 .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
                 .build();
+    }
+
+    @Test
+    @Order(5)
+    void shouldBeAbleToDeleteUser(){
+        var response = given().spec(requestSpecification)
+                .pathParams("id", createdUserId)
+                .when()
+                .delete("{id}")
+                .then()
+                .statusCode(204);
+
+        assertNotNull(response);
     }
 
 }
